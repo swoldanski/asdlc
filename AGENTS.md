@@ -78,6 +78,10 @@ Default section order:
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
+- **Roadmap (`ROADMAP.md`) must be kept current.**
+  - *Why:* it is the single direction aid that keeps contributor edits aligned with project intent and prevents scope drift; `AGENTS.md` governs the binding rules, the roadmap governs direction.
+  - *When:* update it as part of every aSDLC closeout pass whenever a change affects project scope, goals, or in/out-of-scope decisions; if a change does not touch direction, note the roadmap as intentionally unchanged in closeout.
+
 ## AI-assisted contributions
 
 If you use AI tools to help write code, please note this in your pull request description. Use commit trailers where appropriate:
@@ -89,4 +93,4 @@ If you use AI tools to help write code, please note this in your pull request de
 ## Child aSDLC Index
 
 - No child AGENTS.md files are needed for the current repository structure.
-- Root-owned files: `README.md`, `LICENSE`, and root-level project documentation.
+- Root-owned files: `README.md`, `LICENSE`, `ROADMAP.md`, and root-level project documentation.
