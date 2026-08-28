@@ -1,8 +1,7 @@
 # Documentation
 
-User-facing documentation for the project. Every user-facing feature
-must have a corresponding doc here, written for end users of the system
-(see the User Preferences rule in `AGENTS.md`).
+User-facing documentation for the project. Each user-facing feature has a
+corresponding doc in this folder.
 
 ## Index
 

@@ -96,6 +96,5 @@ If you use AI tools to help write code, please note this in your pull request de
 
 ## Child aSDLC Index
 
-- No child AGENTS.md files are needed for the current repository structure.
 - Root-owned files: `README.md`, `LICENSE`, `ROADMAP.md`, and root-level project documentation.
-- `/docs/` holds user-facing documentation; its index is maintained in `/docs/README.md`.
+- `/docs/` holds user-facing documentation and is governed by its own child `AGENTS.md`; its user-facing index is maintained in `/docs/README.md`.
