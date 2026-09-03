@@ -4,7 +4,7 @@ Thank you for contributing to the aSDLC project! Please follow the guidelines be
 
 ## Overview
 
-This project uses the [aSDLC](https://github.com/swoldanski/asdlc) framework for structured software development. All contributions are tracked through the following core documents:
+This project uses the aSDLC framework as defined in [AGENTS.md](AGENTS.md) for structured software development. All contributions are tracked through the following core documents:
 
 - [`AGENTS.md`](AGENTS.md) - Agent contracts and hierarchy
 - [`ROADMAP.md`](ROADMAP.md) - Project direction and scope
