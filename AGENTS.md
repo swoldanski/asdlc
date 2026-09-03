@@ -82,6 +82,10 @@ When the user requests a durable behavior change, record it here or in the relev
   - *Why:* it is the single direction aid that keeps contributor edits aligned with project intent and prevents scope drift; `AGENTS.md` governs the binding rules, the roadmap governs direction.
   - *When:* update it as part of every aSDLC closeout pass whenever a change affects project scope, goals, or in/out-of-scope decisions; if a change does not touch direction, note the roadmap as intentionally unchanged in closeout.
 
+- **All notable changes to this project will be documented in `CHANGELOG.md`.**
+  - *Why:* the changelog provides a curated, versioned record of changes for contributors and users; it ensures transparency and traceability across releases.
+  - *When:* any time a meaningful change is merged or released, add an entry to `CHANGELOG.md` following the [keepachangelog.com](https://keepachangelog.com) format under the appropriate versioned or unreleased section.
+
 - **Every user-facing feature must have corresponding documentation in `/docs`.**
   - *Why:* users of the system need discoverable, task-oriented guidance separate from contributor/contract docs.
   - *When:* add or update the feature's doc in `/docs` as part of the aSDLC closeout pass whenever a user-facing feature is implemented or changed; docs must be written for end users of the system, not contributors.
