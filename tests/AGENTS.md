@@ -11,18 +11,18 @@ Ownership
 Local Contracts
 - Test scripts and configurations must not modify root-level template files directly
 - All test outputs (reports, logs) remain within the /tests directory
-- Test changes require aSDLC pass closeout per AGENTS.md:35
+- Test changes require aSDLC pass closeout
 
 Work Guidance
-- Verification scripts (.sdlc-check-docs.sh, GitHub Actions workflows) are the primary test mechanisms
+- Verification scripts (GitHub Actions workflows) are the primary test mechanisms
 - Pre-commit hooks (.git/hooks/pre-commit) enforce CHANGELOG, ROADMAP, and /docs compliance
 - Test additions must align with keepachangelog.com format for CHANGELOG entries
 - New test categories must be documented and cannot weaken existing aSDLC contracts
 
 Verification
-- Existing checks: pre-commit hook, GitHub Actions sdlc-verification.yml, standalone .sdlc-check-docs.sh
+- Existing checks: pre-commit hook, GitHub Actions sdlc-verification.yml
 - No additional verification framework exists yet; update when one is established
-- Test results are reported in the aSDLC closeout pass (AGENTS.md:70-75)
+- Test results are reported in the aSDLC closeout pass
 
 Child aSDLC Index
 - Root-owned files: AGENTS.md, LICENSE, ROADMAP.md, CHANGELOG.md, CONTRIBUTING.md
