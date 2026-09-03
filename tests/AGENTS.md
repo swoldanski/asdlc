@@ -20,7 +20,7 @@ Work Guidance
 - New test categories must be documented and cannot weaken existing aSDLC contracts
 
 Verification
-- Existing checks: pre-commit hook, GitHub Actions sdlc-verification.yml
+- Existing checks: pre-commit hook
 - No additional verification framework exists yet; update when one is established
 - Test results are reported in the aSDLC closeout pass
 
