@@ -57,7 +57,16 @@ Conventional commit format:
 
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
-### 5. Pull Request Process
+### 5. AI Attribution
+
+If you use AI tools to help write code, please note this in your pull request description. Use commit trailers where appropriate:
+
+    Assisted-by: <name of code assistant>
+    Generated-by: <name of code assistant>
+
+Per the root `AGENTS.md` User Preferences, all notable AI-assisted changes must be documented for transparency and traceability.
+
+### 6. Pull Request Process
 
 1. Push your branch and open a PR against `main`
 2. Ensure all verification checks pass (see below)
@@ -67,7 +76,7 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
    - Any breaking changes
    - Testing performed
 
-### 6. Post-Merge
+### 7. Post-Merge
 
 After PR merge:
 - Branch can be deleted
