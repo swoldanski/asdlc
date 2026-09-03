@@ -90,6 +90,10 @@ When the user requests a durable behavior change, record it here or in the relev
   - *Why:* users of the system need discoverable, task-oriented guidance separate from contributor/contract docs.
   - *When:* add or update the feature's doc in `/docs` as part of the aSDLC closeout pass whenever a user-facing feature is implemented or changed; docs must be written for end users of the system, not contributors.
 
+- **Testing must follow behavioral philosophy and cost-benefit analysis.**
+  - *Why:* behavior tests guard user-visible functionality across refactoring and remain readable; implementation tests break when code changes and provide no guard. Testing cost matters with 1000+ tests dominating runtime.
+  - *When:* any time a new feature or bug fix is implemented or changed, or a regression test is added or modified. Detailed guidance is documented in `/tests/AGENTS.md`.
+
 ## AI-assisted contributions
 
 If you use AI tools to help write code, please note this in your pull request description. Use commit trailers where appropriate:
