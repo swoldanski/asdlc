@@ -102,3 +102,4 @@ If you use AI tools to help write code, please note this in your pull request de
 
 - Root-owned files: `README.md`, `LICENSE`, `ROADMAP.md`, and root-level project documentation.
 - `/docs/` holds user-facing documentation and is governed by its own child `AGENTS.md`; its user-facing index is maintained in `/docs/README.md`.
+- `/tests/` holds test suite and verification mechanisms; governed by its own child `AGENTS.md` and reports verification status on closeout.
