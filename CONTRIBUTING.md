@@ -12,7 +12,7 @@ This project uses the aSDLC framework as defined in [AGENTS.md](AGENTS.md) for s
 
 ## Workflow
 
-### 1. Pre-Work
+### Pre-Work
 
 1. Ensure you have the latest version of the framework documents:
 
@@ -25,7 +25,7 @@ This project uses the aSDLC framework as defined in [AGENTS.md](AGENTS.md) for s
    - [`ROADMAP.md`](ROADMAP.md) - must be kept current per user preferences
    - [`CHANGELOG.md`](CHANGELOG.md) - all notable changes documented
 
-### 2. Branch & Development
+### Branch & Development
 
 1. Create a feature branch from `main`:
 
@@ -39,11 +39,11 @@ This project uses the aSDLC framework as defined in [AGENTS.md](AGENTS.md) for s
    - Create corresponding documentation in `/docs/`
    - Update [`/docs/README.md`](/docs/README.md) if new files/directories are added
 
-### 3. Pre-Commit Checks
+### Pre-Commit Checks
 
 Before committing, run the verification checks (see [Verification Mechanisms](#verification-mechanisms) below).
 
-### 4. Commit Message Guidelines
+### Commit Message Guidelines
 
 Conventional commit format:
 
@@ -57,7 +57,7 @@ Conventional commit format:
 
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
-### 5. AI Attribution
+### AI Attribution
 
 If you use AI tools to help write code, please note this in your pull request description. Use commit trailers where appropriate:
 
@@ -66,7 +66,7 @@ If you use AI tools to help write code, please note this in your pull request de
 
 Per the root `AGENTS.md` User Preferences, all notable AI-assisted changes must be documented for transparency and traceability.
 
-### 6. Pull Request Process
+### Pull Request Process
 
 1. Push your branch and open a PR against `main`
 2. Ensure all verification checks pass (see below)
@@ -76,7 +76,7 @@ Per the root `AGENTS.md` User Preferences, all notable AI-assisted changes must 
    - Any breaking changes
    - Testing performed
 
-### 7. Post-Merge
+### Post-Merge
 
 After PR merge:
 - Branch can be deleted
