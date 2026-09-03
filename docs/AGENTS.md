@@ -27,8 +27,6 @@ pass (Read Before Editing → edit → Update After Editing → Closeout).
 
 ## Verification
 
-_No verification framework exists yet; update this section when one is added._
-
 ## Child aSDLC Index
 
 - No further child AGENTS.md files. Individual docs are plain user-facing

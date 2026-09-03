@@ -29,10 +29,7 @@
 - **If you find yourself building scaffolding to observe an internal mechanism**, that is the signal to stop and either find the user-visible effect to assert on, or skip the test.
 
 ## Verification
-- No additional verification framework exists at this time; update when one is established
-- Test results are reported in the aSDLC closeout pass
 
 ## Child aSDLC Index
-- Root-owned files: AGENTS.md, LICENSE, ROADMAP.md, CHANGELOG.md, CONTRIBUTING.md
-- /docs/ holds user-facing documentation and is governed by its own child AGENTS.md
-- /tests/ is owned by the root aSDLC and reports verification status on closeout
+
+- No further child AGENTS.md files in `/tests/`. The verification status of this directory is reported on every aSDLC closeout pass by the owning doc (this file).

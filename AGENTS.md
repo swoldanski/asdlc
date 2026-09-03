@@ -76,6 +76,8 @@ Default section order:
 
 ## User Preferences
 
+/* These preferences govern projects adopting aSDLC; the template itself is the blueprint they follow. */
+
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
 - **Roadmap (`ROADMAP.md`) must be kept current.**
@@ -104,6 +106,6 @@ If you use AI tools to help write code, please note this in your pull request de
 
 ## Child aSDLC Index
 
-- Root-owned files: `README.md`, `LICENSE`, `ROADMAP.md`, and root-level project documentation.
+- Root-owned files: `README.md`, `LICENSE`, `ROADMAP.md`, `CHANGELOG.md`, `CONTRIBUTING.md`.
 - `/docs/` holds user-facing documentation and is governed by its own child `AGENTS.md`; its user-facing index is maintained in `/docs/README.md`.
 - `/tests/` holds test suite and verification mechanisms; governed by its own child `AGENTS.md` and reports verification status on closeout.
