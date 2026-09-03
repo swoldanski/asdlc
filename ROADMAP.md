@@ -12,11 +12,11 @@ binding rules.
 
 ## Guidelines for the three lists
 
-- **Implemented** — shipped and live in this repo; mark done items `- [x]`.
-- **Backlog** — agreed future work, not yet started; mark `- [ ]`.
+- **Implemented** — shipped and live in this repo; cross out replaced or removed one.
+- **Backlog** — agreed future work, not yet started.
 - **Not in scope** — explicitly excluded on purpose, to prevent drift;
   list only deliberate exclusions, not mere omissions.
-- Keep each item one concise line; link issues/PRs where they exist.
+- Keep each item one concise line; link issues/PRs/docs where they exist.
 
 ## Implemented
 
