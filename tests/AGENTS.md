@@ -29,8 +29,7 @@
 - **If you find yourself building scaffolding to observe an internal mechanism**, that is the signal to stop and either find the user-visible effect to assert on, or skip the test.
 
 ## Verification
-- Existing checks: pre-commit hook, GitHub Actions workflows (when configured)
-- No additional verification framework exists yet; update when one is established
+- No additional verification framework exists at this time; update when one is established
 - Test results are reported in the aSDLC closeout pass
 
 ## Child aSDLC Index
