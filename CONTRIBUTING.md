@@ -36,8 +36,11 @@ This project uses the aSDLC framework as defined in [AGENTS.md](AGENTS.md) for s
 2. Make your changes following the project's purpose and scope.
 
 3. If adding a user-facing feature:
-   - Create corresponding documentation in `/docs/`
+   - Create corresponding documentation in `/docs/` (the user manual)
    - Update [`/docs/README.md`](/docs/README.md) if new files/directories are added
+
+4. If documenting contributors or non-end-user implementation details:
+   - Add it under `/architecture/` (the DevSecOps manual), not `/docs/`
 
 ### Pre-Commit Checks
 
@@ -87,7 +90,7 @@ Be respectful and constructive in all interactions. Follow the project's aSDLC p
 
 ## Verification Mechanisms
 
-This template currently has no verification framework. The root `AGENTS.md` rule states: "Verification must reflect an existing check; if no verification framework exists yet, leave it empty and update it when one exists." Contributors should follow the closeout procedure in the root `AGENTS.md` and the guidance in `tests/AGENTS.md` and `docs/AGENTS.md` for behavioral testing philosophy.
+This template currently has no verification framework. The root `AGENTS.md` rule states: "Verification must reflect an existing check; if no verification framework exists yet, leave it empty and update it when one exists." Contributors should follow the closeout procedure in the root `AGENTS.md` and the guidance in `tests/AGENTS.md` for behavioral testing philosophy.
 
 ---
  
