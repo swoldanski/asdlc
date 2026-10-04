@@ -101,12 +101,11 @@ When the user requests a durable behavior change, record it here or in the relev
 If you use AI tools to help write code, please note this in your pull request description. Use commit trailers where appropriate:
 
     Assisted-by: <name of code assistant>
-    Generated-by: <name of code assistant>
 
 
 ## Child aSDLC Index
 
-- Root-owned files: `README.md`, `LICENSE`, `ROADMAP.md`, `CHANGELOG.md`, `CONTRIBUTING.md`.
+- Root-owned files: `README.md`, `LICENSE`, `ROADMAP.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `.gitignore`.
 - `/docs/` holds the user manual — how end users do things — and is governed by its own child `AGENTS.md`; its user-facing index is maintained in `/docs/README.md`.
 - `/architecture/` holds the DevSecOps manual — how things work under the hood — and is governed by its own child `AGENTS.md`.
 - `/tests/` holds test suite and verification mechanisms; governed by its own child `AGENTS.md` and reports verification status on closeout.

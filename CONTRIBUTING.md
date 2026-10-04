@@ -65,7 +65,6 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 If you use AI tools to help write code, please note this in your pull request description. Use commit trailers where appropriate:
 
     Assisted-by: <name of code assistant>
-    Generated-by: <name of code assistant>
 
 Per the root `AGENTS.md` User Preferences, all notable AI-assisted changes must be documented for transparency and traceability.
 
