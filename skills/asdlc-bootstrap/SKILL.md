@@ -33,10 +33,12 @@ from the `asdlc` repository; the new project starts as a clean, standalone repo.
    ```
 
    `--implemented`, `--backlog`, and `--not-in-scope` repeat once per bullet; omit
-   any that do not apply. The script clones the template from GitHub, or uses a
-   local template with `--from <path>` when offline. It copies the template files
-   (never a template `skills/` or `commands/`), refuses to overwrite an existing
-   `<project-name>/`, and finishes with a fresh `git init` and initial commit — the
+   any that do not apply. The directory is the *slugified* project name — lowercase,
+   non-alphanumeric runs collapsed to a hyphen (`Abc or Efg` → `abc-or-efg`) — while
+   the README title keeps the name as given. The script clones the template from
+   GitHub, or uses a local template with `--from <path>` when offline. It copies the
+   template files (never a template `skills/` or `commands/`), refuses to overwrite an
+   existing `<slug>/`, and finishes with a fresh `git init` and initial commit — the
    new repo has no template `.git`, tags, or `origin`.
 
 3. **Finish seeding.** If the script did not write the whole vision (for example

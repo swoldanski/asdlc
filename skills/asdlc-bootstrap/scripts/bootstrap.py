@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Scaffold a new aSDLC project from the aSDLC template.
 
-Creates ``<dest>/<project-name>/`` from the template (remote clone, or a local
+Creates ``<dest>/<slug>/`` from the template (remote clone, or a local
 template path when offline), seeding the roadmap vision/direction and the
-README title, then initialises a fresh git repository. The new repository has
-no template ``.git``, tags, or ``origin`` remote, and none of the template's own
-packaging directories (``skills/``, ``commands/``).
+README title, then initialises a fresh git repository. The directory name is
+the slugified project name (e.g. ``Abc or Efg`` -> ``abc-or-efg``); the README
+title keeps the project name as given. The new repository has no template
+``.git``, tags, or ``origin`` remote, and none of the template's own packaging
+directories (``skills/``, ``commands/``).
 
 Usage:
     python3 bootstrap.py <project-name> [--dest DIR] [--from SOURCE]
@@ -17,6 +19,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import re
 import shutil
 import subprocess
 import sys
@@ -35,6 +38,18 @@ EXCLUDE_NAMES = {".git"}
 def fail(message: str, code: int = 1) -> NoReturn:
     print(f"bootstrap: error: {message}", file=sys.stderr)
     raise SystemExit(code)
+
+
+def slugify(name: str) -> str:
+    """Turn a project name into a directory-safe slug.
+
+    ``Abc or Efg`` -> ``abc-or-efg``; any run of characters outside
+    ``[a-z0-9]`` collapses to a single hyphen.
+    """
+    slug = re.sub(r"[^a-z0-9]+", "-", name.strip().lower()).strip("-")
+    if not slug:
+        fail(f"project name {name!r} has no usable characters for a directory name")
+    return slug
 
 
 def run(cmd: list[str], cwd: Path | None = None) -> None:
@@ -172,13 +187,14 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 def main(argv: list[str]) -> int:
     args = parse_args(argv)
-    name = args.project_name
-    if not name or name in {".", ".."} or "/" in name or "\\" in name:
-        fail(f"invalid project name: {name!r}")
+    name = args.project_name.strip()
+    if not name:
+        fail("project name must not be empty")
+    slug = slugify(name)
 
     dest_root = Path(args.dest).expanduser().resolve()
     dest_root.mkdir(parents=True, exist_ok=True)
-    target = dest_root / name
+    target = dest_root / slug
     if target.exists():
         fail(f"refusing to overwrite existing path: {target}", code=2)
 
