@@ -31,10 +31,6 @@ DEFAULT_TEMPLATE_URL = "https://github.com/swoldanski/asdlc.git"
 PACKAGING_DIRS = {"skills", "commands"}
 EXCLUDE_NAMES = {".git"}
 
-VISION_PLACEHOLDER = (
-    "<one-paragraph statement of what the project should become / the problem it solves>"
-)
-
 
 def fail(message: str, code: int = 1) -> NoReturn:
     print(f"bootstrap: error: {message}", file=sys.stderr)
@@ -105,6 +101,24 @@ def insert_bullets(text: str, heading: str, bullets: list[str]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def replace_section(text: str, heading: str, body: str) -> str:
+    """Replace a section's body, keeping the heading line.
+
+    Decoupled from the template's placeholder wording: the section is found by
+    its heading and everything up to the next ``## `` heading is replaced.
+    """
+    lines = text.splitlines()
+    try:
+        start = lines.index(heading)
+    except ValueError:
+        fail(f"roadmap section '{heading}' not found in template")
+    end = start + 1
+    while end < len(lines) and not lines[end].startswith("## "):
+        end += 1
+    lines[start + 1:end] = ["", body.strip(), ""]
+    return "\n".join(lines) + "\n"
+
+
 def seed_roadmap(
     roadmap: Path,
     vision: str | None,
@@ -114,7 +128,7 @@ def seed_roadmap(
 ) -> None:
     text = roadmap.read_text(encoding="utf-8")
     if vision:
-        text = text.replace(VISION_PLACEHOLDER, vision.strip())
+        text = replace_section(text, "## Vision", vision)
     text = insert_bullets(text, "## Implemented", implemented)
     text = insert_bullets(text, "## Backlog", backlog)
     text = insert_bullets(text, "## Not in scope", not_in_scope)
