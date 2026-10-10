@@ -22,6 +22,20 @@
   The existing suite is almost entirely behavior tests, and copying a neighbouring test's shape is faster and safer than inventing a new one.
 - **A regression test must fail when the fix is reverted** — verify that once before trusting it.
   A test that has only ever been seen green proves nothing.
+- **An assertion that cannot fail is worse than no assertion.**
+  A block that collects a list and then asserts `True` unconditionally reads as coverage, inflates
+  the check count, and catches nothing. Before trusting an assertion, name the input that would
+  make it fail; if there isn't one, it is not a check. The count printed by the suite is not the
+  same thing as the coverage it provides.
+- **Verify a claim against its source before repeating it, including claims about this repository.**
+  Statements of the form "this is not documented", "this belongs to an older release", or "nothing
+  checks this" are cheap to confirm with `grep` or `git log` and expensive to get wrong. Read the
+  file or the history first, then say it.
+- **Re-render generated files between the perturbation and the run.**
+  When the test target is a generated document, editing its generator without rebuilding leaves the
+  committed copy stale, so a drift guard fires first and *masks* the check the red test is meant to
+  exercise — the run looks red, but for the wrong reason. Regenerate, then run, then confirm the
+  failure names the intended check.
 - **Not every change needs a test.**
   We have over a thousand tests and the browser-based ones dominate the runtime, so each new test is a permanent cost for every contributor.
   If a fix can only be covered by an elaborate test that mirrors the implementation, skipping the test can be the better choice — give the reason in the **Implementation** section of the pull request, so it reads as a deliberate decision and not as an oversight.

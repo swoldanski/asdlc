@@ -19,6 +19,7 @@ Editing → edit → Update After Editing → Closeout).
 - The user manual (how end users do things) belongs in `/docs`, not here.
 - Content here may describe internal design, contracts, and contributor
   workflow that users are not expected to read.
+- The documentation index is maintained in `/architecture/README.md`.
 
 ## Work Guidance
 

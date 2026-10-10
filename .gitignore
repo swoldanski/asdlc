@@ -23,3 +23,8 @@ __pycache__/
 *.log
 tmp/
 .cache/
+
+# Agent scratch — plans and session artifacts; never a deliverable
+.openhands/
+.agents_tmp/
+.hermes/

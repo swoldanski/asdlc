@@ -82,7 +82,7 @@ When the user requests a durable behavior change, record it here or in the relev
 
 - **Roadmap (`ROADMAP.md`) must be kept current.**
   - *Why:* it is the single direction aid that keeps contributor edits aligned with project intent and prevents scope drift; `AGENTS.md` governs the binding rules, the roadmap governs direction.
-  - *When:* update it as part of every aSDLC closeout pass whenever a change affects project scope, goals, or in/out-of-scope decisions; if a change does not touch direction, note the roadmap as intentionally unchanged in closeout.
+  - *When:* update it as part of every aSDLC closeout pass whenever a change affects project scope, goals, or in/out-of-scope decisions; if a change does not touch direction, note the roadmap as intentionally unchanged in closeout. Check § *Backlog* for items the change just superseded, and re-scope them: adding to § *Implemented* is not enough, because a backlog item whose premise the change invalidates stays there describing work already done, and the roadmap then misdirects the next reader. Move the completed part to § *Implemented* and re-scope what genuinely remains — or move it to § *Not in scope* if the user declines it.
 
 - **All notable changes to this project will be documented in `CHANGELOG.md`.**
   - *Why:* the changelog provides a curated, versioned record of changes for contributors and users; it ensures transparency and traceability across releases.
@@ -91,6 +91,10 @@ When the user requests a durable behavior change, record it here or in the relev
 - **`/docs` holds the user manual — how end users do things; `/architecture` holds the DevSecOps manual — how things work under the hood.**
   - *Why:* users need discoverable, task-oriented guidance (how to use features) separate from contributor and implementation docs (how the system works internally); mixing the two blurs both surfaces.
   - *When:* every user-facing feature must have a doc in `/docs` (the user manual) added or updated as part of the aSDLC closeout pass whenever it is implemented or changed; any documentation for contributors, internal design, DevSecOps, or other non-end-user implementation detail must be kept in `/architecture` (the DevSecOps manual), never in `/docs`.
+
+- **Plans, spikes, and session artifacts are never deliverables.** Working documents (plans, scratch probes, session notes) live in the git-ignored scratch directory, which is why it is ignored: they are scaffolding for a change, not part of the project. A delivered change belongs in `CHANGELOG.md` and the docs it touched; a durable *decision* belongs in the doc it governs.
+  - *Why:* the ignored directory only stays meaningful if ignored files stay out of tracked documentation; mixing the two makes every closeout pass read scaffolding as a contract, and a stale plan reads exactly like a current one. A plan that ships as project documentation carries its own staleness forward, because nothing re-reads it.
+  - *When:* when adding any document under a tracked path, confirm it is project documentation rather than a working artifact. `/docs` carries the specific form of this rule in its own child `AGENTS.md`.
 
 - **Testing must follow behavioral philosophy and cost-benefit analysis.**
   - *Why:* behavior tests guard user-visible functionality across refactoring and remain readable; implementation tests break when code changes and provide no guard. Testing cost matters with 1000+ tests dominating runtime.
@@ -107,5 +111,5 @@ If you use AI tools to help write code, please note this in your pull request de
 
 - Root-owned files: `README.md`, `LICENSE`, `ROADMAP.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `.gitignore`.
 - `/docs/` holds the user manual — how end users do things — and is governed by its own child `AGENTS.md`; its user-facing index is maintained in `/docs/README.md`.
-- `/architecture/` holds the DevSecOps manual — how things work under the hood — and is governed by its own child `AGENTS.md`.
+- `/architecture/` holds the DevSecOps manual — how things work under the hood — and is governed by its own child `AGENTS.md`; its index is maintained in `/architecture/README.md`.
 - `/tests/` holds test suite and verification mechanisms; governed by its own child `AGENTS.md` and reports verification status on closeout.

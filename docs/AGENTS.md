@@ -32,6 +32,19 @@ pass (Read Before Editing → edit → Update After Editing → Closeout).
 - Before adding a doc here, confirm the content is end-user-facing; if it
   describes contributor workflow or implementation internals, place it in
   `/architecture` instead.
+- **No plans, spikes, or session artifacts — ever.** A plan is a working
+  document for the change that produced it, not a manual page. Plans and
+  scratch work belong in the git-ignored scratch directory; a delivered change
+  belongs in `CHANGELOG.md` and the docs it touched, and the durable *decisions*
+  belong in the doc they govern, not in the plan that proposed them. A plan that
+  ships as a manual page carries its own staleness forward, because nothing
+  re-reads it. If you are writing "the plan" or "not yet implemented" into a
+  `/docs` file, it is in the wrong place.
+- **Generated docs stay generated.** A doc written by a generator is never
+  hand-edited — its navigation (an index and back-links, where it has them) is
+  part of its contract, and a missing entry or back-link is otherwise invisible,
+  because the page still builds and every remaining link still resolves. Change
+  the generator and re-render instead.
 - Keep each doc task-oriented, concise, and operational.
 
 ## Verification
