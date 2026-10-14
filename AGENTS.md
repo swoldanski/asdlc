@@ -88,6 +88,10 @@ When the user requests a durable behavior change, record it here or in the relev
   - *Why:* the changelog provides a curated, versioned record of changes for contributors and users; it ensures transparency and traceability across releases.
   - *When:* any time a meaningful change is merged or released, add an entry to `CHANGELOG.md` following the [keepachangelog.com](https://keepachangelog.com) format under the appropriate versioned or unreleased section.
 
+- **A repository that is copied into other repositories keeps its own release history in its git tags, not in `CHANGELOG.md`.**
+  - *Why:* its files are copied verbatim into every repository scaffolded from it, so a release entry written in the source repository reads as a false entry in each copy, while the tags are the one record that stays where the release happened and no copy inherits.
+  - *When:* this repository ships itself as a scaffold — it carries the copy/scaffold script and the `/skills` + `/commands` packaging layer that never appear downstream. Record such a release by tagging it, and in the closeout pass note `CHANGELOG.md` as intentionally unchanged instead of writing the entry.
+
 - **`/docs` holds the user manual — how end users do things; `/architecture` holds the DevSecOps manual — how things work under the hood.**
   - *Why:* users need discoverable, task-oriented guidance (how to use features) separate from contributor and implementation docs (how the system works internally); mixing the two blurs both surfaces.
   - *When:* every user-facing feature must have a doc in `/docs` (the user manual) added or updated as part of the aSDLC closeout pass whenever it is implemented or changed; any documentation for contributors, internal design, DevSecOps, or other non-end-user implementation detail must be kept in `/architecture` (the DevSecOps manual), never in `/docs`.

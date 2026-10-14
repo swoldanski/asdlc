@@ -1,7 +1,7 @@
 # Tests Directory AGENTS.md
 
 ## Purpose
-- Owns the test suite and verification mechanisms for the aSDLC template
+- Owns the test suite and verification mechanisms for this project
 - Provides structured testing that enforces project quality standards
 
 ## Ownership
@@ -9,7 +9,7 @@
 - Linked from root AGENTS.md as a child directory
 
 ## Local Contracts
-- Test scripts and configurations must not modify root-level template files directly
+- Test scripts and configurations must not modify root-level project files directly
 - All test outputs (reports, logs) remain within the /tests directory
 - Test changes require aSDLC pass closeout per framework closeout procedure
 

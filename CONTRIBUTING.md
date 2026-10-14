@@ -89,7 +89,7 @@ Be respectful and constructive in all interactions. Follow the project's aSDLC p
 
 ## Verification Mechanisms
 
-This template currently has no verification framework. The root `AGENTS.md` rule states: "Verification must reflect an existing check; if no verification framework exists yet, leave it empty and update it when one exists." Contributors should follow the closeout procedure in the root `AGENTS.md` and the guidance in `tests/AGENTS.md` for behavioral testing philosophy.
+This project currently has no verification framework. The root `AGENTS.md` rule states: "Verification must reflect an existing check; if no verification framework exists yet, leave it empty and update it when one exists." Contributors should follow the closeout procedure in the root `AGENTS.md` and the guidance in `tests/AGENTS.md` for behavioral testing philosophy.
 
 ---
  

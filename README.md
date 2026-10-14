@@ -1,8 +1,8 @@
 # aSDLC
 
-Blueprint for projects developed via Agentic SDLC.
+_One-line description of this project._
 
-This repository is the aSDLC framework template — a highly performant `AGENTS.md` hierarchy that governs how agents work. The root `AGENTS.md` is the binding contract ("aSDLC rail"); `ROADMAP.md` records project direction; `/docs` holds the user manual (how end users do things) while `/architecture` holds the DevSecOps manual (how things work under the hood).
+This repository follows the aSDLC framework — a highly performant `AGENTS.md` hierarchy that governs how agents work. The root `AGENTS.md` is the binding contract ("aSDLC rail"); `ROADMAP.md` records project direction; `/docs` holds the user manual (how end users do things) while `/architecture` holds the DevSecOps manual (how things work under the hood).
 
 ## How to use
 
