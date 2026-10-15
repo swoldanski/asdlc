@@ -6,8 +6,9 @@ path when offline), seeding the README title/description and the roadmap
 vision/direction, then initialises a fresh git repository. The directory name is
 the slugified project name (e.g. ``Abc or Efg`` -> ``abc-or-efg``); the README
 title keeps the project name as given. The new repository has no template
-``.git``, tags or ``origin`` remote, and none of the template's own packaging
-directories (``skills/``, ``commands/``).
+``.git``, tags, or ``origin`` remote, and none of the directories that exist
+only to build and verify the template itself (``skills/``, ``commands/``,
+``template-tests/``).
 
 Executable code: this script runs ``git clone`` (unless ``--from`` names a local
 directory), copies the template tree, rewrites ``README.md`` and ``ROADMAP.md``
@@ -42,9 +43,11 @@ from typing import NoReturn
 
 DEFAULT_TEMPLATE_URL = "https://github.com/swoldanski/asdlc.git"
 
-# Template-only packaging: shipped to publish the skill, never part of a
-# scaffolded project.
-PACKAGING_DIRS = {"skills", "commands"}
+# Template-only: these directories exist to build and verify the template
+# itself, and are never part of a scaffolded project. copy_template() skips them
+# by name, and the suite reads this set rather than repeating it, so a new
+# template-only directory cannot silently start shipping into scaffolds.
+TEMPLATE_ONLY_DIRS = {"skills", "commands", "template-tests"}
 EXCLUDE_NAMES = {".git"}
 
 # The line a scaffolded project describes itself in. The template ships this
@@ -132,7 +135,7 @@ def copy_template(template: Path, target: Path) -> None:
     target.mkdir(parents=True)
     ignored = shutil.ignore_patterns(*EXCLUDE_NAMES)
     for entry in sorted(template.iterdir()):
-        if entry.name in EXCLUDE_NAMES or entry.name in PACKAGING_DIRS:
+        if entry.name in EXCLUDE_NAMES or entry.name in TEMPLATE_ONLY_DIRS:
             continue
         dest = target / entry.name
         if entry.is_dir():
@@ -286,7 +289,7 @@ def print_plan(target: Path, slug: str, args: argparse.Namespace, description: s
     print(f"  slug:     {slug}")
     print(f"  target:   {target}")
     print(f"  template: {describe_template(args.source)}")
-    print(f"  excludes: {', '.join(sorted(EXCLUDE_NAMES | PACKAGING_DIRS))}")
+    print(f"  excludes: {', '.join(sorted(EXCLUDE_NAMES | TEMPLATE_ONLY_DIRS))}")
     print(f"  README:   title -> {name!r}, {readme}")
     print(
         f"  ROADMAP:  vision -> {'replaced' if args.vision else 'placeholder left in place'}"

@@ -42,11 +42,12 @@ capabilities as intended rather than as surprises:
 - It shells out to **git**: `clone` of the template URL (unless `--from` names a
   local directory), then `init -b main`, `add -A` and `commit` inside the new
   project. No other command is invoked.
-- It copies the template tree, excluding `.git`, `skills/` and `commands/`, and
-  rewrites exactly two files in the new project: `README.md` (H1 title, and the
-  description placeholder when one is supplied) and `ROADMAP.md` (§ *Vision* and
-  the three lists). Nothing outside `<dest>/<slug>/` plus a temporary clone and
-  its own staging directory is written.
+- It copies the template tree, excluding `.git`, `skills/`, `commands/` and
+  `template-tests/`, and rewrites exactly two files in the new project:
+  `README.md` (H1 title, and the description placeholder when one is supplied)
+  and `ROADMAP.md` (§ *Vision* and the three lists). Nothing outside
+  `<dest>/<slug>/` plus a temporary clone and its own staging directory is
+  written.
 
 ## Prerequisites
 
@@ -145,5 +146,7 @@ shows exactly one commit, `git remote -v` is empty and `git status` is clean; an
 - `scripts/bootstrap.py` — the scaffolding script; `--help` lists every flag, and its
   docstring carries the exit codes (0 created, 1 failed with nothing left behind,
   2 target exists).
+- `template-tests/` — the behavioral suite for that script and the scaffold it
+  produces; template-only, never copied into a project.
 - The scaffolded project follows the aSDLC pass: Read Before Editing → edit →
   Update After Editing → Closeout, per its root `AGENTS.md`.

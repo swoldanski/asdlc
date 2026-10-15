@@ -34,10 +34,11 @@ Before Editing → edit → Update After Editing → Closeout).
   to a project that is not one.
 - A file that ships into a scaffold must not name a path the scaffold does not
   contain. The root `AGENTS.md` is copied verbatim into every project, so its
-  Child aSDLC Index lists only what survives the copy — `/skills/` and
-  `/commands/` are absent from it on purpose and are documented here instead.
-  Naming the packaging layer in the rail ships a dangling index into every
-  scaffold, which no phrase-based template-identity check will catch.
+  Child aSDLC Index lists only what survives the copy, and the template-only
+  directories — `TEMPLATE_ONLY_DIRS` in the bootstrap script — document
+  themselves through their own child `AGENTS.md`. One named in the rail ships a
+  dangling index into every scaffold, which a phrase-based check cannot catch:
+  `/template-tests/` asserts the index resolves instead.
 - A skill package that ships to other agents must satisfy the Agent Skills
   specification, not only this repository's conventions: `skills-ref validate
   <skill-dir>` (from `agentskills/agentskills`) is the reference check, and it
@@ -81,9 +82,10 @@ Before Editing → edit → Update After Editing → Closeout).
   safe`) and SkillSpector (`risk score`, maximum issue severity) — after any
   change to a bundled script or to its declaration, because a capability the
   script has and the frontmatter omits is what these report.
-- The bundled script itself, run against a throwaway target: the created tree,
-  the seeded content, the git state, and the refusal paths. This one is run per
-  session from the scratch directory, not tracked in the repository.
+- `/template-tests/` drives the bundled script against a throwaway target and
+  reads what it produced: the created tree, the seeded content, the git state,
+  the refusal paths, and what a scaffold must not receive —
+  `python3 -m unittest discover -s template-tests -v`.
 
 ## Child aSDLC Index
 
