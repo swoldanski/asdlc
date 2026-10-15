@@ -32,6 +32,12 @@ Before Editing → edit → Update After Editing → Closeout).
   Template-specific how-to cannot live in `/docs` or `/architecture`, because
   both are copied verbatim into every scaffold and would describe the template
   to a project that is not one.
+- A file that ships into a scaffold must not name a path the scaffold does not
+  contain. The root `AGENTS.md` is copied verbatim into every project, so its
+  Child aSDLC Index lists only what survives the copy — `/skills/` and
+  `/commands/` are absent from it on purpose and are documented here instead.
+  Naming the packaging layer in the rail ships a dangling index into every
+  scaffold, which no phrase-based template-identity check will catch.
 - A skill package that ships to other agents must satisfy the Agent Skills
   specification, not only this repository's conventions: `skills-ref validate
   <skill-dir>` (from `agentskills/agentskills`) is the reference check, and it
