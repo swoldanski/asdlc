@@ -1,12 +1,8 @@
 ---
 name: asdlc-bootstrap
-description: >-
-  Scaffold a new project from the aSDLC template and seed it with the project's
-  vision and direction. Use when the user asks to "scaffold a new aSDLC project",
-  "bootstrap a project from the aSDLC template", "start a project with aSDLC", or
-  runs "/asdlc <project-name>".
+description: Scaffold, bootstrap, create or start a new aSDLC project. Use when the user asks to scaffold, bootstrap or start a new project with aSDLC.
 license: MIT
-allowed-tools: Bash Read Write
+allowed-tools: Bash(python3:*) Bash(py:*) Bash(git:*) Read Write
 compatibility: >-
   Needs git and Python 3 (standard library only, no third-party packages). Invoke
   the script as python3 on POSIX; on Windows use py -3 or python, since python3
@@ -26,8 +22,14 @@ from the `asdlc` repository; the new project starts as a clean, standalone repo.
 
 ## When to Use
 
-- The user asks to "scaffold a new aSDLC project", "bootstrap a project from the
-  aSDLC template" or "start a project with aSDLC", or runs `/asdlc <name>`.
+- The user asks to scaffold, bootstrap, create, start or init a new project from
+  the aSDLC template — "scaffold a new aSDLC project", "bootstrap a project from
+  the aSDLC template", "start a project with aSDLC", "create a new project from
+  the template", "set up a new repo from the aSDLC template".
+- The user invokes the skill by command. The command name is the client's:
+  `/asdlc <name>` where the repository's `commands/asdlc.md` is installed, and
+  `/` plus the slugified frontmatter `name` — `/asdlc-bootstrap` — where the
+  client derives the command from the skill itself.
 - **Don't use for:** adding files to an existing project, or editing the template
   itself — that repository has its own aSDLC pass.
 
