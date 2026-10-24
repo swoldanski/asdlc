@@ -28,3 +28,6 @@ tmp/
 .openhands/
 .agents_tmp/
 .hermes/
+
+# Agent worktrees — parallel checkouts live under <repo>/.worktrees/
+.worktrees/
