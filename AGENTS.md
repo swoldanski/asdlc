@@ -16,9 +16,18 @@
 4. Read every AGENTS.md found along each route
 5. If a parent AGENTS.md lists a child AGENTS.md whose scope contains the path, read that child and continue from there
 6. Use the nearest AGENTS.md as the local contract and parent docs for repo-wide rules
-7. If docs conflict, the closer doc controls local work details, but no child doc may weaken aSDLC
+7. If docs conflict, the closer doc controls local work details, but no child doc may weaken aSDLC — see ## Precedence
 
-Do not rely on memory. Re-read the applicable aSDLC chain in the current session before editing.
+Do not rely on memory. Re-read the applicable aSDLC chain in the current session before editing, then classify the change in `## Decide Before Editing`.
+
+## Decide Before Editing
+
+Classify the change before writing:
+
+- **Contract change** — alters purpose, scope, ownership, structure, workflow, rules, inputs, outputs, permissions, constraints, side effects, artifacts, or an index. Requires the full pass: update the owning docs, then close out.
+- **Local change** — wording, a typo, formatting, a comment, or an implementation detail no contract names. Requires the fast path: no doc update, one closeout line naming which doc would have changed and why it did not.
+
+If the classification is unclear, treat the change as a contract change. Defaulting to local is how drift starts.
 
 ## Update After Editing
 
@@ -34,12 +43,24 @@ Update the closest owning AGENTS.md when a change affects:
 
 Update parent docs when parent-level structure, ownership, workflow, or child index changes. Update child docs when parent changes alter local rules. Remove stale or contradictory text immediately. Small edits that do not change behavior or contracts may leave docs unchanged, but the aSDLC pass still must happen.
 
+### Decisions
+
+When a change settles a durable choice — one a future reader could reasonably reverse for want of the reasoning — record it in the doc it governs, in one line: the choice, and the alternative rejected.
+
+The line lives in the owning doc's `Local Contracts` or `Work Guidance`, never in a separate decision log and never in a plan. A choice that leaves no durable trace — a name, a formatting detail, an implementation detail no contract names — is not a decision under this rule.
+
 ## Hierarchy
 
 - Root AGENTS.md is the aSDLC rail: project-wide instructions, global preferences, durable workflow rules, and the top-level Child aSDLC Index
 - Child AGENTS.md files own domain-specific instructions and their own Child aSDLC Index
 - Each parent explains what its direct children cover and what stays owned by the parent
 - The closer a doc is to the work, the more specific and practical it must be
+
+## Precedence
+
+- A child AGENTS.md may only add constraints. It may not remove or relax a phase, a closeout step, or a rule the rail defines, and it may not grant a permission the rail withholds.
+- To decide whether a child weakens the rail, name the rail rule it relaxes. If you can name it, the child weakens aSDLC and is a defect to fix, not a local interpretation to honour. If you cannot name it, the child is adding local detail and the closer doc controls.
+- A child may be stricter than the rail and narrower in scope. It may not be looser.
 
 ## Child Doc Shape
 
@@ -67,12 +88,34 @@ Default section order:
 
 ## Closeout
 
+The numbered steps below are the full pass for a contract change; a local change closes out through the fast path at the end of this section.
+
 1. Re-check changed paths against the aSDLC chain
 2. Update nearest owning docs and any affected parents or children
 3. Refresh every affected Child aSDLC Index
 4. Remove stale or contradictory text
 5. Run existing verification when relevant
 6. Report any docs intentionally left unchanged and why
+
+### Fast path
+
+A local change closes out in one line, not six steps: what changed, and which doc would have changed had it been a contract change, and why it did not. The line is the evidence the classification was made; a local change with no such line is indistinguishable from an unreviewed one.
+
+Verification is not part of the reduction: if a local change alters anything a test reads, step 5 still applies.
+
+## Self-Reference
+
+Every file this repository ships is copied into a scaffold, so it must read true for the project that receives it. A statement that holds only here is a defect, not context.
+
+- If a rule, example, or claim holds only because this repository is the template, say so in the text itself and name the exception — the release-record rule is the model.
+- Nothing that ships may attribute the scaffold to this repository's author, copyright, or project name. Such text is seeded at copy time or removed, never copied.
+
+## Propagate
+
+A change to the rail is not finished when it is committed here. This section fires at release, not on every edit: the rail is copied into every scaffold, so the change reaches adopters at the next copy.
+
+- When a change alters what an adopting project must do — a phase, a closeout step, a precedence rule, or a preference — say what adopters must do in the release tag message. A tag that only names the change leaves every existing scaffold without the instruction.
+- An existing scaffold does not update itself. State the impact; do not assume it lands.
 
 ## User Preferences
 
@@ -82,11 +125,11 @@ When the user requests a durable behavior change, record it here or in the relev
 
 - **Roadmap (`ROADMAP.md`) must be kept current.**
   - *Why:* it is the single direction aid that keeps contributor edits aligned with project intent and prevents scope drift; `AGENTS.md` governs the binding rules, the roadmap governs direction.
-  - *When:* update it as part of every aSDLC closeout pass whenever a change affects project scope, goals, or in/out-of-scope decisions; if a change does not touch direction, note the roadmap as intentionally unchanged in closeout. Check § *Backlog* for items the change just superseded, and re-scope them: adding to § *Implemented* is not enough, because a backlog item whose premise the change invalidates stays there describing work already done, and the roadmap then misdirects the next reader. Move the completed part to § *Implemented* and re-scope what genuinely remains — or move it to § *Not in scope* if the user declines it.
+  - *When:* update it as part of every aSDLC closeout pass whenever a change affects project scope, goals, or in/out-of-scope decisions; if a change does not touch direction, note the roadmap as intentionally unchanged in closeout. Check § *Backlog* for items the change just superseded, and re-scope them: adding to § *Implemented* is not enough, because a backlog item whose premise the change invalidates stays there describing work already done, and the roadmap then misdirects the next reader. Move the completed part to § *Implemented* and re-scope what genuinely remains — or move it to § *Not in scope* if the user declines it. Where the repository ships itself as a scaffold, this file is the skeleton adopters receive, so the template's own direction is recorded in its release history rather than in this file; note it as intentionally unchanged.
 
-- **All notable changes to this project will be documented in `CHANGELOG.md`.**
-  - *Why:* the changelog provides a curated, versioned record of changes for contributors and users; it ensures transparency and traceability across releases.
-  - *When:* any time a meaningful change is merged or released, add an entry to `CHANGELOG.md` following the [keepachangelog.com](https://keepachangelog.com) format under the appropriate versioned or unreleased section.
+- **All notable changes are recorded in the project's release record.**
+  - *Why:* the release record provides a curated, versioned history of changes for contributors and users; it ensures transparency and traceability across releases.
+  - *When:* any time a meaningful change is merged or released, add it to the release record — an entry in `CHANGELOG.md` following the [keepachangelog.com](https://keepachangelog.com) format under the appropriate versioned or unreleased section, or the release tag message when the repository keeps its release history in tags.
 
 - **A repository that is copied into other repositories keeps its own release history in its git tags, not in `CHANGELOG.md`.**
   - *Why:* its files are copied verbatim into every repository scaffolded from it, so a release entry written in the source repository reads as a false entry in each copy, while the tags are the one record that stays where the release happened and no copy inherits.
@@ -96,7 +139,7 @@ When the user requests a durable behavior change, record it here or in the relev
   - *Why:* users need discoverable, task-oriented guidance (how to use features) separate from contributor and implementation docs (how the system works internally); mixing the two blurs both surfaces.
   - *When:* every user-facing feature must have a doc in `/docs` (the user manual) added or updated as part of the aSDLC closeout pass whenever it is implemented or changed; any documentation for contributors, internal design, DevSecOps, or other non-end-user implementation detail must be kept in `/architecture` (the DevSecOps manual), never in `/docs`.
 
-- **Plans, spikes, and session artifacts are never deliverables.** Working documents (plans, scratch probes, session notes) live in the git-ignored scratch directory, which is why it is ignored: they are scaffolding for a change, not part of the project. A delivered change belongs in `CHANGELOG.md` and the docs it touched; a durable *decision* belongs in the doc it governs.
+- **Plans, spikes, and session artifacts are never deliverables.** Working documents (plans, scratch probes, session notes) live in the git-ignored scratch directory, which is why it is ignored: they are scaffolding for a change, not part of the project. A delivered change belongs in the release record and the docs it touched; a durable *decision* belongs in the doc it governs.
   - *Why:* the ignored directory only stays meaningful if ignored files stay out of tracked documentation; mixing the two makes every closeout pass read scaffolding as a contract, and a stale plan reads exactly like a current one. A plan that ships as project documentation carries its own staleness forward, because nothing re-reads it.
   - *When:* when adding any document under a tracked path, confirm it is project documentation rather than a working artifact. `/docs` carries the specific form of this rule in its own child `AGENTS.md`.
 

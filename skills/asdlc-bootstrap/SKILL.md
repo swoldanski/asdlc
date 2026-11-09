@@ -43,11 +43,13 @@ capabilities as intended rather than as surprises:
   local directory), then `init -b main`, `add -A` and `commit` inside the new
   project. No other command is invoked.
 - It copies the template tree, excluding `.git`, `skills/`, `commands/` and
-  `template-tests/`, and rewrites exactly two files in the new project:
-  `README.md` (H1 title, and the description placeholder when one is supplied)
-  and `ROADMAP.md` (§ *Vision* and the three lists). Nothing outside
-  `<dest>/<slug>/` plus a temporary clone and its own staging directory is
-  written.
+  `template-tests/`, and rewrites exactly three files in the new project:
+  `README.md` (H1 title, and the description placeholder when one is supplied),
+  `ROADMAP.md` (§ *Vision* and the three lists), and `LICENSE` (its copyright
+  line, to the adopter's own holder — `--copyright-holder`, else git
+  `user.name`, else a visible placeholder and a warning on stderr). Nothing
+  outside `<dest>/<slug>/` plus a temporary clone and its own staging directory
+  is written.
 
 ## Prerequisites
 
@@ -85,7 +87,10 @@ capabilities as intended rather than as surprises:
 
    `--description`, `--implemented`, `--backlog` and `--not-in-scope` are optional;
    the three list flags repeat once per bullet, and `--description` defaults to the
-   vision's first sentence. The directory is the *slugified* project name — lowercase,
+   vision's first sentence. `--copyright-holder` sets the holder in the new
+   `LICENSE`; it defaults to the ambient git `user.name`, and when neither resolves
+   the license carries a visible placeholder and the script warns on stderr. The
+   directory is the *slugified* project name — lowercase,
    non-alphanumeric runs collapsed to a hyphen (`Abc or Efg` → `abc-or-efg`) — while
    the README title keeps the name as given. The script clones the template from
    GitHub, or uses a local template with `--from <path>` when offline. It never copies
@@ -118,6 +123,12 @@ capabilities as intended rather than as surprises:
   directory, or a git URL.
 - **Omitting `--vision`/`--description` keeps the template placeholder.** That is the
   intended state, not a defect to fix by hand-editing the new copy.
+- **`LICENSE` ships and is seeded, not copied.** Its copyright line is rewritten to
+  `--copyright-holder` or your ambient `user.name`; a template license with no
+  copyright line fails the scaffold rather than shipping this repository's author.
+  The text stays the template's MIT, because that is this template's choice and not a
+  recommendation: the adopter owns the license decision, so replace the file after
+  scaffolding when a different license is intended.
 - **A template whose README placeholder line changed loses the description silently
   otherwise** — the script warns on stderr instead of failing, so read the warning
   rather than reporting a description that was never written.
@@ -136,10 +147,11 @@ cd verify-me && git log --oneline && git remote -v && git status --short
 ```
 
 Done means: the directory is the slug of the name given; `README.md`'s H1 is the name
-as given and its description is the seeded line or the placeholder; the four ROADMAP
-sections carry the seeded content with the template's blank-line spacing; `git log`
-shows exactly one commit, `git remote -v` is empty and `git status` is clean; and no
-`skills/` or `commands/` directory was copied.
+as given and its description is the seeded line or the placeholder; `LICENSE`'s
+copyright line names the holder you supplied or your own git `user.name`; the four
+ROADMAP sections carry the seeded content with the template's blank-line spacing;
+`git log` shows exactly one commit, `git remote -v` is empty and `git status` is
+clean; and no `skills/` or `commands/` directory was copied.
 
 ## Reference
 

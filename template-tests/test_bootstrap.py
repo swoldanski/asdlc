@@ -19,12 +19,14 @@ Template-only: ``copy_template`` skips this directory (``TEMPLATE_ONLY_DIRS`` in
 from __future__ import annotations
 
 import importlib.util
+import os
 import re
 import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
+from datetime import date
 from pathlib import Path
 
 TEMPLATE = Path(__file__).resolve().parents[1]
@@ -55,9 +57,18 @@ def _load_script():
 BOOTSTRAP = _load_script()
 
 
-def run(*args: str) -> subprocess.CompletedProcess:
+def run(*args: str, env: dict[str, str] | None = None) -> subprocess.CompletedProcess:
     return subprocess.run(
-        [sys.executable, str(SCRIPT), *args], capture_output=True, text=True
+        [sys.executable, str(SCRIPT), *args], capture_output=True, text=True, env=env
+    )
+
+
+def copyright_line(path: Path) -> str:
+    """The first ``Copyright`` line of a license file — the one seeding rewrites."""
+    return next(
+        line.strip()
+        for line in path.read_text(encoding="utf-8").splitlines()
+        if line.strip().startswith("Copyright")
     )
 
 
@@ -99,7 +110,7 @@ class BootstrapCase(unittest.TestCase):
             mutate(dest)
         return dest
 
-    def scaffold(self, name="Widget Lab", *, source=None, dest=None, **flags):
+    def scaffold(self, name="Widget Lab", *, source=None, dest=None, env=None, **flags):
         args = [name, "--dest", str(dest or self.work), "--from", str(source or TEMPLATE)]
         for flag, value in flags.items():
             flag = "--" + flag.replace("_", "-")
@@ -107,7 +118,7 @@ class BootstrapCase(unittest.TestCase):
                 args.append(flag)
             elif value is not None:
                 args += [flag, str(value)]
-        return run(*args)
+        return run(*args, env=env)
 
 
 class DryRun(BootstrapCase):
@@ -124,6 +135,7 @@ class DryRun(BootstrapCase):
         self.assertIn("description -> 'One line about it.'", plan)
         self.assertIn("vision -> replaced", plan)
         self.assertIn("Implemented +1", plan)
+        self.assertIn(f"LICENSE:  copyright (c) {date.today().year}", plan)
         # The identity the commit will carry, in either documented form.
         self.assertRegex(plan, r"one commit as .+ \((ambient git config|no .+ configured)\)")
 
@@ -255,19 +267,81 @@ class TemplateIntegrity(BootstrapCase):
             self.assertFalse((target / name).exists(), f"{name}/ was copied into the scaffold")
 
     def test_no_template_identity_prose(self):
+        """Every shipped file describes the scaffold, never this repository.
+
+        The LICENSE copyright line is the one exception: seeding rewrites it, so
+        it names the template's author only when the adopter happens to be that
+        same person. The license case below pins what it must say instead.
+        """
         self.assertEqual(self.scaffold().returncode, 0)
         target = self.work / "widget-lab"
+        template_line = copyright_line(TEMPLATE / "LICENSE")
         found = []
-        for path in sorted(target.rglob("*.md")):
-            for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-                if line.strip().startswith(PREFERENCES_NOTE):
+        for path in sorted(target.rglob("*")):
+            if not path.is_file() or ".git" in path.relative_to(target).parts:
+                continue
+            for number, line in enumerate(
+                path.read_text(encoding="utf-8", errors="ignore").splitlines(), 1
+            ):
+                stripped = line.strip()
+                if stripped.startswith(PREFERENCES_NOTE):
+                    continue
+                if path.name.lower().startswith("license") and stripped == template_line:
                     continue
                 if any(phrase in line for phrase in TEMPLATE_IDENTITY_PHRASES):
-                    found.append(f"{path.relative_to(target)}:{number}: {line.strip()[:70]}")
+                    found.append(f"{path.relative_to(target)}:{number}: {stripped[:70]}")
         self.assertEqual(found, [], "template identity prose shipped into the scaffold")
 
+    def test_license_ships_with_the_adopters_copyright(self):
+        """A scaffold needs a license, and it must name its own holder."""
+        holder = "Ada Lovelace"
+        out = self.scaffold(copyright_holder=holder)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        license_file = self.work / "widget-lab" / "LICENSE"
+        self.assertTrue(license_file.is_file(), "the scaffold has no LICENSE")
+        self.assertEqual(
+            copyright_line(license_file),
+            f"Copyright (c) {date.today().year} {holder}",
+            "the license does not name the adopter as copyright holder",
+        )
+
+    def test_license_holder_falls_back_to_a_visible_placeholder(self):
+        """With no holder anywhere, the license must say so — never a stand-in name."""
+        env = {
+            **os.environ,
+            "GIT_CONFIG_GLOBAL": str(self.work / "no-such-gitconfig"),
+            "GIT_CONFIG_NOSYSTEM": "1",
+        }
+        out = self.scaffold(no_git=True, env=env)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("copyright holder", out.stderr, "no warning on stderr")
+        text = (self.work / "widget-lab" / "LICENSE").read_text(encoding="utf-8")
+        self.assertNotIn(BOOTSTRAP.FALLBACK_IDENTITY[0], text, "the tool's own name was used as a holder")
+        self.assertEqual(
+            copyright_line(self.work / "widget-lab" / "LICENSE"),
+            f"Copyright (c) {date.today().year} {BOOTSTRAP.LICENSE_HOLDER_PLACEHOLDER}",
+        )
+
+    def test_license_without_a_copyright_line_fails_instead_of_shipping(self):
+        def drop_copyright(tpl: Path) -> None:
+            license_file = tpl / "LICENSE"
+            license_file.write_text(
+                "\n".join(
+                    line
+                    for line in license_file.read_text(encoding="utf-8").splitlines()
+                    if not line.startswith("Copyright")
+                ) + "\n",
+                encoding="utf-8",
+            )
+
+        out = self.scaffold(source=self.fixture_template(drop_copyright))
+        self.assertEqual(out.returncode, 1, "an unseeded license must not ship")
+        self.assertIn("no copyright line found", out.stderr)
+        self.assertFalse((self.work / "widget-lab").exists(), "a half-built tree was left behind")
+
     def test_index_names_only_paths_the_scaffold_has(self):
-        """A shipped file that indexes a path the scaffold lacks dangles for every reader."""
+        """A shipped file that indexes a path the scaffold lacks dangles for every reader,
+        and a shipped child doc the index does not name is invisible to one."""
         self.assertEqual(self.scaffold().returncode, 0)
         target = self.work / "widget-lab"
         index = (target / "AGENTS.md").read_text(encoding="utf-8").split("## Child aSDLC Index")[-1]
@@ -278,6 +352,14 @@ class TemplateIntegrity(BootstrapCase):
         }
         missing = sorted(token for token in named if not (target / token.strip("/")).exists())
         self.assertEqual(missing, [], "the Child aSDLC Index names paths the scaffold does not have")
+
+        unindexed = sorted(
+            f"/{doc.parent.relative_to(target)}/"
+            for doc in target.rglob("AGENTS.md")
+            if doc != target / "AGENTS.md"
+            and f"/{doc.parent.relative_to(target)}/" not in named
+        )
+        self.assertEqual(unindexed, [], "a child doc ships without an entry in the Child aSDLC Index")
 
 
 @unittest.skipUnless(

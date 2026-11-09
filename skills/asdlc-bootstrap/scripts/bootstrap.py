@@ -2,8 +2,9 @@
 """Scaffold a new aSDLC project from the aSDLC template.
 
 Creates ``<dest>/<slug>/`` from the template (remote clone, or a local template
-path when offline), seeding the README title/description and the roadmap
-vision/direction, then initialises a fresh git repository. The directory name is
+path when offline), seeding the README title/description, the roadmap
+vision/direction and the LICENSE copyright holder, then initialises a fresh git
+repository. The directory name is
 the slugified project name (e.g. ``Abc or Efg`` -> ``abc-or-efg``); the README
 title keeps the project name as given. The new repository has no template
 ``.git``, tags, or ``origin`` remote, and none of the directories that exist
@@ -20,7 +21,7 @@ Usage:
     python3 bootstrap.py <project-name> [--dest DIR] [--from SOURCE]
                          [--description TEXT] [--vision TEXT]
                          [--implemented TEXT] [--backlog TEXT]
-                         [--not-in-scope TEXT]
+                         [--not-in-scope TEXT] [--copyright-holder NAME]
                          [--no-git] [--dry-run]
 
 Exit codes:
@@ -38,6 +39,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from datetime import date
 from pathlib import Path
 from typing import NoReturn
 
@@ -48,17 +50,25 @@ DEFAULT_TEMPLATE_URL = "https://github.com/swoldanski/asdlc.git"
 # by name, and the suite reads this set rather than repeating it, so a new
 # template-only directory cannot silently start shipping into scaffolds.
 TEMPLATE_ONLY_DIRS = {"skills", "commands", "template-tests"}
+# LICENSE ships: a scaffold needs a license, so its copyright line is seeded
+# with the adopter's own holder instead of this repository's author.
 EXCLUDE_NAMES = {".git"}
 
 # The line a scaffolded project describes itself in. The template ships this
 # placeholder so no template identity is copied into a new repository.
 README_DESCRIPTION_PLACEHOLDER = "_One-line description of this project._"
 
+# Written into LICENSE only when no holder resolves, so an unseeded license is
+# visible rather than silently attributed. Deliberately not FALLBACK_IDENTITY:
+# a scaffolding tool named as a copyright holder is a worse defect than a gap.
+LICENSE_HOLDER_PLACEHOLDER = "<copyright holder>"
+
 # Author/committer used only when git cannot resolve the user's own identity.
 FALLBACK_IDENTITY = ("aSDLC bootstrap", "asdlc@localhost")
 
 _URL_RE = re.compile(r"^[a-z][a-z0-9+.-]*://", re.IGNORECASE)
 _SCP_URL_RE = re.compile(r"^[^/\\@]+@[^/\\:]+:")
+_COPYRIGHT_RE = re.compile(r"^Copyright\b.*$", re.MULTILINE)
 
 
 def fail(message: str, code: int = 1) -> NoReturn:
@@ -170,6 +180,21 @@ def seed_readme(readme: Path, project_name: str, description: str | None) -> Non
     readme.write_text("".join(lines), encoding="utf-8")
 
 
+def seed_license(license_file: Path, holder: str, year: int) -> None:
+    """Point the license's copyright line at the adopter, not this repository.
+
+    The scaffold ships a license — a new project without one is a worse defect
+    than the wrong holder — so the line must be rewritten. An unseeded license
+    would attribute someone else's project to this repository's author, so a
+    missing copyright line fails rather than shipping quietly.
+    """
+    text = license_file.read_text(encoding="utf-8") if license_file.is_file() else ""
+    seeded, replaced = _COPYRIGHT_RE.subn(f"Copyright (c) {year} {holder}", text, count=1)
+    if not replaced:
+        fail(f"no copyright line found in {license_file}")
+    license_file.write_text(seeded, encoding="utf-8")
+
+
 def insert_bullets(text: str, heading: str, bullets: list[str]) -> str:
     """Append bullets to a section, keeping the file's blank-line convention."""
     if not bullets:
@@ -231,6 +256,27 @@ def git_config(target: Path, key: str) -> str:
     return proc.stdout.strip() if proc.returncode == 0 else ""
 
 
+def resolve_copyright_holder(dest_root: Path, explicit: str | None) -> str:
+    """The holder written into the scaffold's LICENSE.
+
+    ``--copyright-holder`` first, then the adopter's ambient git ``user.name``.
+    Neither resolving leaves a visible placeholder and a warning on stderr: this
+    repository's author is never a fallback for someone else's project.
+    """
+    holder = (explicit or "").strip()
+    if holder:
+        return holder
+    ambient = git_config(dest_root, "user.name")
+    if ambient:
+        return ambient
+    print(
+        f"bootstrap: warning: no copyright holder resolved (no --copyright-holder, "
+        f"no git user.name); LICENSE says {LICENSE_HOLDER_PLACEHOLDER!r}",
+        file=sys.stderr,
+    )
+    return LICENSE_HOLDER_PLACEHOLDER
+
+
 def git_identity(target: Path) -> list[str]:
     """``-c`` author/committer overrides only where git resolves no identity.
 
@@ -273,7 +319,9 @@ def describe_identity(dest_root: Path) -> str:
     return f"{FALLBACK_IDENTITY[0]} <{FALLBACK_IDENTITY[1]}> (no {missing} configured)"
 
 
-def print_plan(target: Path, slug: str, args: argparse.Namespace, description: str | None) -> None:
+def print_plan(
+    target: Path, slug: str, args: argparse.Namespace, description: str | None, holder: str
+) -> None:
     name = args.project_name.strip()
     readme = (
         f"description -> {description!r}"
@@ -291,6 +339,7 @@ def print_plan(target: Path, slug: str, args: argparse.Namespace, description: s
     print(f"  template: {describe_template(args.source)}")
     print(f"  excludes: {', '.join(sorted(EXCLUDE_NAMES | TEMPLATE_ONLY_DIRS))}")
     print(f"  README:   title -> {name!r}, {readme}")
+    print(f"  LICENSE:  copyright (c) {date.today().year} {holder}")
     print(
         f"  ROADMAP:  vision -> {'replaced' if args.vision else 'placeholder left in place'}"
         f"; Implemented +{len(args.implemented)}, Backlog +{len(args.backlog)},"
@@ -318,6 +367,9 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
                         help="roadmap Backlog bullet (repeatable)")
     parser.add_argument("--not-in-scope", dest="not_in_scope", action="append",
                         default=[], help="roadmap Not in scope bullet (repeatable)")
+    parser.add_argument("--copyright-holder", dest="copyright_holder", default=None,
+                        help="copyright holder written into LICENSE "
+                             "(default: git user.name, else a visible placeholder)")
     parser.add_argument("--no-git", action="store_true",
                         help="skip git init (template files only)")
     parser.add_argument("--dry-run", action="store_true",
@@ -338,8 +390,9 @@ def main(argv: list[str]) -> int:
         fail(f"refusing to overwrite existing path: {target}", code=2)
 
     description = args.description or first_sentence(args.vision or "") or None
+    holder = resolve_copyright_holder(dest_root, args.copyright_holder)
     if args.dry_run:
-        print_plan(target, slug, args, description)
+        print_plan(target, slug, args, description, holder)
         return 0
 
     dest_root.mkdir(parents=True, exist_ok=True)
@@ -352,6 +405,7 @@ def main(argv: list[str]) -> int:
     try:
         template = resolve_template(args.source, temp_roots)
         copy_template(template, staging)
+        seed_license(staging / "LICENSE", holder, date.today().year)
         seed_readme(staging / "README.md", name, description)
         seed_roadmap(
             staging / "ROADMAP.md",

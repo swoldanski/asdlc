@@ -1,52 +1,36 @@
 # Contributing
 
-Thank you for contributing to the aSDLC project! Please follow the guidelines below to ensure smooth collaboration and maintain project quality.
+Thank you for contributing to this project!
 
-## Overview
+## Where the rules live
 
-This project uses the aSDLC framework as defined in [AGENTS.md](AGENTS.md) for structured software development. All contributions are tracked through the following core documents:
+The root [`AGENTS.md`](AGENTS.md) is the binding contract. The aSDLC pass, the
+rule for what belongs under `/docs` versus `/architecture`, the AI-attribution
+trailer, and the closeout procedure all live there; this file does not restate
+them. Read the rail first, then come back here for the mechanics it leaves open.
 
-- [`AGENTS.md`](AGENTS.md) - Agent contracts and hierarchy
-- [`ROADMAP.md`](ROADMAP.md) - Project direction and scope
-- [`CHANGELOG.md`](CHANGELOG.md) - Change tracking
+The documents it indexes are [`AGENTS.md`](AGENTS.md), [`ROADMAP.md`](ROADMAP.md)
+for direction, and the project's release record — [`CHANGELOG.md`](CHANGELOG.md)
+unless the project keeps its release history in git tags, in which case the tags
+are the record and the changelog stays as the template left it.
 
 ## Workflow
 
-### Pre-Work
-
-1. Ensure you have the latest version of the framework documents:
+1. Update `main` and create a feature branch:
 
    ```bash
    git pull origin main
-   ```
-
-2. Verify the required documents are present and current:
-   - [`AGENTS.md`](AGENTS.md) - read before editing
-   - [`ROADMAP.md`](ROADMAP.md) - must be kept current per user preferences
-   - [`CHANGELOG.md`](CHANGELOG.md) - all notable changes documented
-
-### Branch & Development
-
-1. Create a feature branch from `main`:
-
-   ```bash
    git checkout -b feature/short-description
    ```
 
 2. Make your changes following the project's purpose and scope.
 
-3. If adding a user-facing feature:
-   - Create corresponding documentation in `/docs/` (the user manual)
-   - Update [`/docs/README.md`](/docs/README.md) if new files/directories are added
+3. Run the checks the repository defines before committing — its test command,
+   linter, or build, whichever `AGENTS.md` or the project's own docs name. If it
+   defines none, say so in the closeout rather than claiming a check that does
+   not exist.
 
-4. If documenting contributors or non-end-user implementation details:
-   - Add it under `/architecture/` (the DevSecOps manual), not `/docs/`
-
-### Pre-Commit Checks
-
-Before committing, run the verification checks (see [Verification Mechanisms](#verification-mechanisms) below).
-
-### Commit Message Guidelines
+## Commit Messages
 
 Conventional commit format:
 
@@ -60,37 +44,22 @@ Conventional commit format:
 
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
-### AI Attribution
+## Pull Request Process
 
-If you use AI tools to help write code, please note this in your pull request description. Use commit trailers where appropriate:
-
-    Assisted-by: <name of code assistant>
-
-Per the root `AGENTS.md` User Preferences, all notable AI-assisted changes must be documented for transparency and traceability.
-
-### Pull Request Process
-
-1. Push your branch and open a PR against `main`
-2. Ensure all verification checks pass (see below)
-3. Fill the PR template describing:
+1. Push your branch and open a pull request against `main`.
+2. Ensure the repository's checks pass.
+3. Describe in the pull request:
    - What changed and why
    - Which aSDLC pass this aligns with
    - Any breaking changes
    - Testing performed
 
-### Post-Merge
-
-After PR merge:
-- Branch can be deleted
+After merge, the branch can be deleted.
 
 ## Code of Conduct
 
-Be respectful and constructive in all interactions. Follow the project's aSDLC pass closeout procedure for any changes affecting structure, contracts, or workflows.
-
-## Verification Mechanisms
-
-This project currently has no verification framework. The root `AGENTS.md` rule states: "Verification must reflect an existing check; if no verification framework exists yet, leave it empty and update it when one exists." Contributors should follow the closeout procedure in the root `AGENTS.md` and the guidance in `tests/AGENTS.md` for behavioral testing philosophy.
+Be respectful and constructive in all interactions.
 
 ---
- 
+
 Questions? Open an issue or reach out to the maintainers.
