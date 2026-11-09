@@ -7,6 +7,7 @@
 ## Ownership
 - Maintained by the project core team
 - Linked from root AGENTS.md as a child directory
+- Follows the root aSDLC contract
 
 ## Local Contracts
 - Test scripts and configurations must not modify root-level project files directly

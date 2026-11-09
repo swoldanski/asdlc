@@ -6,7 +6,7 @@ This repository follows the aSDLC framework — a highly performant `AGENTS.md` 
 
 ## How to use
 
-- Follow the aSDLC pass on every change: Read Before Editing → edit → Update After Editing → Closeout.
+- Follow the aSDLC pass on every change: Read Before Editing → Decide Before Editing → edit → Update After Editing → Closeout.
 - Keep `ROADMAP.md` current; add the user manual (how end users do things) under `/docs` and the DevSecOps manual (how things work under the hood) under `/architecture`.
 - The root `AGENTS.md` Child aSDLC Index governs which files are framework-owned vs. project-customized.
 - See `AGENTS.md` for the full contract and the Child aSDLC Index for the repository structure.

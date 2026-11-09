@@ -11,7 +11,8 @@ lives in `/architecture`.
 
 Owned by this child aSDLC doc. Follows the root aSDLC contract. Any change
 touching `/docs` content or the documentation index goes through the aSDLC
-pass (Read Before Editing → edit → Update After Editing → Closeout).
+pass (Read Before Editing → Decide Before Editing → edit →
+Update After Editing → Closeout).
 
 ## Local Contracts
 
@@ -35,8 +36,8 @@ pass (Read Before Editing → edit → Update After Editing → Closeout).
 - **No plans, spikes, or session artifacts — ever.** A plan is a working
   document for the change that produced it, not a manual page. Plans and
   scratch work belong in the git-ignored scratch directory; a delivered change
-  belongs in `CHANGELOG.md` and the docs it touched, and the durable *decisions*
-  belong in the doc they govern, not in the plan that proposed them. A plan that
+  belongs in the release record and the docs it touched, and the durable
+  *decisions* belong in the doc they govern, not in the plan that proposed them. A plan that
   ships as a manual page carries its own staleness forward, because nothing
   re-reads it. If you are writing "the plan" or "not yet implemented" into a
   `/docs` file, it is in the wrong place.

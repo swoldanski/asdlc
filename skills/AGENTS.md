@@ -11,7 +11,8 @@ part of any project scaffolded from this template.
 
 Owned by this child aSDLC doc. Follows the root aSDLC contract. Any change
 touching `/skills` or `/commands` content goes through the aSDLC pass (Read
-Before Editing → edit → Update After Editing → Closeout).
+Before Editing → Decide Before Editing → edit → Update After Editing →
+Closeout).
 
 ## Local Contracts
 
