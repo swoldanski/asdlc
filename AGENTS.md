@@ -104,6 +104,10 @@ When the user requests a durable behavior change, record it here or in the relev
   - *Why:* behavior tests guard user-visible functionality across refactoring and remain readable; implementation tests break when code changes and provide no guard. Testing cost matters with 1000+ tests dominating runtime.
   - *When:* any time a new feature or bug fix is implemented or changed, or a regression test is added or modified. Detailed guidance is documented in `/tests/AGENTS.md`.
 
+- **Prefer Zero Token Architecture (ZTA): when feasible, use AI to produce a deterministic solution that can execute without AI.**
+  - *Why:* AI is most valuable for reasoning about a problem and constructing the solution, not necessarily for repeatedly executing it. A deterministic program, script, workflow, rule, test, query, configuration, or other executable artifact is typically more reproducible, testable, auditable, and cost-efficient than repeating the same reasoning through model inference. The goal is not to avoid AI during development, but to remove it from the recurring execution path where its reasoning can be compiled into deterministic behavior.
+  - *When:* whenever implementing functionality that would otherwise invoke AI at runtime, first determine whether the required behavior can reasonably be expressed as deterministic code, configuration, rules, queries, tests, constraints, or workflows. Prefer that implementation when it can satisfy the required behavior without materially reducing correctness or maintainability. When deterministic handling covers only part of the problem, keep that path deterministic and use AI only as an explicit fallback for cases that genuinely require interpretation or reasoning. Do not force a deterministic solution where doing so would make behavior brittle, incorrect, or substantially harder to maintain.
+
 ## AI-assisted contributions
 
 If you use AI tools to help write code, please note this in your pull request description. Use commit trailers where appropriate:
